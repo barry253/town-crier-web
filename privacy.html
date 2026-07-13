@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — Town Crier</title>
+  <meta name="description" content="Privacy policy for the Town Crier Android app.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a href="index.html" class="brand">Town <span>Crier</span></a>
+      <div class="tagline">Audio-first driving companion for Android</div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="privacy.html" class="active">Privacy</a>
+      </nav>
+    </header>
+
+    <main>
+      <h1>Privacy Policy</h1>
+      <div class="effective-date">Effective date: July 13, 2026</div>
+
+      <p>This Privacy Policy describes how Town Crier ("Town Crier," "we," "us," or "our") collects, uses, and shares information when you use the Town Crier mobile application (the "App").</p>
+
+      <p>Town Crier is an audio-first driving companion that announces the names of towns you pass through and shares curated facts about each place. It is designed to be used hands-free while driving, with navigation apps running in the foreground.</p>
+
+      <p>We believe in collecting as little data as possible and being transparent about what we do collect. Please read this policy carefully to understand our practices.</p>
+
+      <h2>1. Summary</h2>
+      <div class="summary-box">
+        <ul>
+          <li><strong>No accounts.</strong> You do not need to sign up, log in, or provide personal information to use Town Crier.</li>
+          <li><strong>Location stays on your device.</strong> GPS coordinates are used locally to determine which town you are in. Approximate location data is only sent to us if you opt into anonymous analytics or if you submit a Problem Report.</li>
+          <li><strong>Anonymous usage data is optional.</strong> You can choose whether to share anonymous diagnostic data with us. You can change this choice anytime in the App's Settings.</li>
+          <li><strong>Crash reports are always on.</strong> If the App crashes or hits a technical error, we receive a report so we can fix it. Crash reports do not include your location.</li>
+          <li><strong>You control what you send us.</strong> Problem reports are only sent when you submit them yourself.</li>
+          <li><strong>No advertising.</strong> We do not show ads, sell your data, or share it with advertisers.</li>
+          <li><strong>No microphone or camera access.</strong> The App does not request or use your microphone or camera.</li>
+        </ul>
+      </div>
+
+      <h2>2. Information We Collect</h2>
+
+      <h3>2.1 Information stored only on your device</h3>
+      <p>The following information is stored on your device and is not transmitted to our servers:</p>
+      <ul>
+        <li><strong>Location data.</strong> The App uses your device's GPS to determine which town you are currently in. Location data is processed locally.</li>
+        <li><strong>App preferences and settings.</strong> Your voice, volume, feature toggles, and similar preferences are stored locally.</li>
+        <li><strong>Announcement history.</strong> A record of towns and facts you have recently heard, used to avoid repeating the same content, is stored locally. You can clear this history at any time through the History screen in the App.</li>
+        <li><strong>Cached content.</strong> Facts and images fetched for towns you have visited are cached locally to reduce network use.</li>
+      </ul>
+
+      <h3>2.2 Anonymous device identifier</h3>
+      <p>When you first open the App, we generate a random anonymous identifier called a <strong>Device ID</strong> (formatted like <code>TC-XXXX-XXXX</code>). This identifier:</p>
+      <ul>
+        <li>Is not linked to your name, email, phone number, or any other personal information.</li>
+        <li>Is generated on your device and stored locally.</li>
+        <li>Is included with any Problem Reports you submit and, if you have opted into anonymous analytics, with anonymous usage data.</li>
+        <li>Persists across App updates.</li>
+        <li>Is deleted if you uninstall the App and reinstall.</li>
+      </ul>
+      <p>You can view your Device ID in the App's Settings.</p>
+
+      <h3>2.3 Information you send us when submitting a Problem Report</h3>
+      <p>If you use the App's "Report a Problem" feature, we receive the following information:</p>
+      <ul>
+        <li>The details of the problem you describe.</li>
+        <li>Your Device ID (to correlate related reports).</li>
+        <li>The town or location you were in when the issue occurred, if relevant.</li>
+        <li>Basic device information (phone model, Android version, App version) to help us reproduce the problem.</li>
+        <li><strong>Optional:</strong> if you choose to provide it, your name and email address so we can follow up. This is entirely optional and is only used for follow-up on your report.</li>
+      </ul>
+
+      <h3>2.4 Automatic diagnostic and crash data (always active)</h3>
+      <p>To keep the App working, some technical data is sent regardless of your other settings:</p>
+      <ul>
+        <li><strong>Crash reports.</strong> If the App crashes or encounters an unexpected error, we receive an error report through Sentry (see Section 4). Crash reports include the type of error and where in the App's code it happened, basic device information, your Device ID, and contextual information about your recent actions in the App (such as which screens you visited or which buttons you tapped) to help us reproduce the problem. Crash reports do not include your location.</li>
+        <li><strong>Operational health signals.</strong> A small number of technical events help us detect App-level issues (for example, whether an audio playback got stuck, or whether an image failed to load). These signals do not include your location or personally identifiable information.</li>
+      </ul>
+
+      <h3>2.5 Anonymous analytics (opt-in)</h3>
+      <p>If you choose to enable "Help improve Town Crier" during onboarding or in Settings, we collect additional anonymous data to help us improve the App:</p>
+      <ul>
+        <li><strong>Product analytics.</strong> Anonymous events about which features you use and how the App is performing (which screens you view, which buttons you tap, when the App announces a town, when you mute or unmute audio, and similar). This is collected via PostHog (see Section 4). If you do not opt in, PostHog does not send any events.</li>
+        <li><strong>Content gap reports.</strong> When you drive through a town that we do not yet have content for, the App reports the town's name, county, state, and approximate coordinates. This helps us prioritize which towns to add next.</li>
+        <li><strong>Feature usage events.</strong> A small number of additional events (for example, when you change the App's mode) help us understand how the App is used in practice.</li>
+      </ul>
+      <p>All anonymous analytics data is associated with your Device ID, not with your personal identity. You can turn this off at any time in Settings.</p>
+
+      <h3>2.6 Advanced diagnostic settings (developer-focused)</h3>
+      <p>The App includes advanced diagnostic settings intended for developers troubleshooting specific technical issues. These settings are off by default and are hidden inside a Debug menu. Turning them on causes additional technical events to be sent to Sentry. Normal users will never trigger these settings inadvertently.</p>
+
+      <h2>3. How We Use Your Information</h2>
+      <p>We use the information described above to:</p>
+      <ul>
+        <li>Provide the App's core functionality (announcing towns and facts as you drive).</li>
+        <li>Improve the App based on real usage patterns (when you have opted into anonymous analytics).</li>
+        <li>Fix bugs and technical problems.</li>
+        <li>Respond to Problem Reports you send us.</li>
+        <li>Add coverage for towns that are missing from our content library.</li>
+      </ul>
+      <p>We do not:</p>
+      <ul>
+        <li>Sell your data to third parties.</li>
+        <li>Share your data with advertisers.</li>
+        <li>Use your data for advertising or marketing to you.</li>
+        <li>Combine your data with data from other sources to build a profile of you.</li>
+      </ul>
+
+      <h2>4. Third Parties We Use</h2>
+      <p>The App uses the following third-party services to function:</p>
+
+      <p><strong>Cloudflare.</strong> We use Cloudflare Workers and Cloudflare R2 to store Problem Reports, anonymous content gap reports, and to serve the App's content (fact library, images, and audio clips). Cloudflare's privacy policy is available at <a href="https://www.cloudflare.com/privacypolicy/">cloudflare.com/privacypolicy</a>.</p>
+
+      <p><strong>Sentry.</strong> We use Sentry to collect crash reports and operational health signals. Sentry is active regardless of your analytics opt-in setting. Sentry's privacy policy is available at <a href="https://sentry.io/privacy/">sentry.io/privacy</a>. Default retention for Sentry data is 90 days.</p>
+
+      <p><strong>PostHog.</strong> We use PostHog to collect anonymous product analytics only when you have opted in via the "Help improve Town Crier" setting. If you have not opted in, PostHog does not send events from your device. PostHog's privacy policy is available at <a href="https://posthog.com/privacy">posthog.com/privacy</a>.</p>
+
+      <p><strong>Wikipedia and Wikimedia Commons.</strong> The App fetches facts and images from Wikipedia and Wikimedia Commons. These requests are made from your device directly. Wikimedia's privacy policy is available at <a href="https://foundation.wikimedia.org/wiki/Policy:Privacy_policy">foundation.wikimedia.org/wiki/Policy:Privacy_policy</a>.</p>
+
+      <p><strong>OpenStreetMap (Nominatim).</strong> The App uses OpenStreetMap's Nominatim service to translate GPS coordinates into town names. These requests are made from your device directly. OpenStreetMap's privacy policy is available at <a href="https://wiki.osmfoundation.org/wiki/Privacy_Policy">wiki.osmfoundation.org/wiki/Privacy_Policy</a>.</p>
+
+      <p>We do not control these third-party services and are not responsible for their privacy practices. We encourage you to review their policies.</p>
+
+      <h2>5. Location Data</h2>
+      <p>Location data is central to how the App works, so we want to be especially clear:</p>
+      <ul>
+        <li><strong>Your device's GPS coordinates are processed locally on your device.</strong> The App uses them to determine which town you are in, so it can announce the town name and fetch relevant content.</li>
+        <li><strong>Coordinates are not continuously transmitted to our servers.</strong> In normal operation, we never receive your GPS coordinates.</li>
+        <li><strong>Coordinates may be included in specific reports:</strong>
+          <ul>
+            <li>If you submit a Problem Report, coordinates for the location where the problem occurred may be included to help us reproduce the issue.</li>
+            <li>If you have opted into anonymous analytics, approximate coordinates are included in content gap reports (see Section 2.5).</li>
+          </ul>
+        </li>
+        <li><strong>Crash reports and operational health data do not include your location.</strong> Sentry receives only technical error information, not GPS coordinates.</li>
+        <li><strong>We do not build location history profiles.</strong> We do not track where you drive, when you drive, or how long you spend in any place.</li>
+      </ul>
+      <p>You can revoke location permission at any time through your device's Settings. Doing so will prevent the App from working, because it cannot announce towns without knowing where you are.</p>
+
+      <h2>6. Data Retention</h2>
+      <ul>
+        <li><strong>Problem Reports and anonymous content gap reports</strong> are stored on Cloudflare R2 indefinitely, as they form our record of user-reported issues and content needs. You can request deletion (see Section 8).</li>
+        <li><strong>Crash reports and operational data (Sentry)</strong> are retained for 90 days by default.</li>
+        <li><strong>Anonymous analytics (PostHog)</strong> are retained according to PostHog's default policies.</li>
+        <li><strong>Data on your device</strong> is retained until you clear the App's data or uninstall.</li>
+      </ul>
+
+      <h2>7. Your Choices</h2>
+      <ul>
+        <li><strong>Opt out of anonymous analytics.</strong> You can turn off "Help improve Town Crier" at any time in the App's Settings. When it is off, we do not collect product analytics, content gap reports, or other opt-in analytics events.</li>
+        <li><strong>Do not submit Problem Reports.</strong> Reports are only sent when you actively submit them through the "Report a Problem" screen.</li>
+        <li><strong>Clear announcement history.</strong> You can clear the App's local history of towns and facts you have heard through the History screen in the App at any time, without affecting other settings or data.</li>
+        <li><strong>Revoke location permission.</strong> You can revoke location access in your device's Settings. The App will not function without location access.</li>
+        <li><strong>Clear App data or uninstall.</strong> You can clear the App's local data or uninstall it at any time. Uninstalling also removes your Device ID and all locally cached content.</li>
+      </ul>
+
+      <h2>8. Your Rights</h2>
+      <p>You have the right to:</p>
+      <ul>
+        <li><strong>Know what data we have about you.</strong> Email us at <a href="mailto:privacy@towncrierapp.com">privacy@towncrierapp.com</a> with your Device ID, and we will tell you what data associated with that Device ID exists on our servers.</li>
+        <li><strong>Request deletion.</strong> Email us at <a href="mailto:privacy@towncrierapp.com">privacy@towncrierapp.com</a> with your Device ID, and we will delete any Problem Reports and content gap reports associated with that Device ID from our servers. Please allow up to 30 days for deletion to be processed.</li>
+        <li><strong>Request correction.</strong> If you believe any data we hold is inaccurate, contact us at <a href="mailto:privacy@towncrierapp.com">privacy@towncrierapp.com</a> and we will review it.</li>
+      </ul>
+      <p>If you exercise these rights, we may need to keep certain minimal records (for example, a log that a deletion was requested) to demonstrate compliance.</p>
+
+      <h2>9. Data Security</h2>
+      <p>We take reasonable technical measures to protect your information:</p>
+      <ul>
+        <li>Data transmitted between the App and our servers is encrypted in transit using HTTPS.</li>
+        <li>Data stored on Cloudflare R2 is protected by Cloudflare's security infrastructure.</li>
+        <li>Access to our servers is limited to authorized personnel using authenticated credentials.</li>
+      </ul>
+      <p>No system is completely secure. While we work to protect your information, we cannot guarantee absolute security.</p>
+
+      <h2>10. Children's Privacy</h2>
+      <p>Town Crier is not directed at children under 13, and we do not knowingly collect personal information from children under 13. If you believe we have collected information from a child under 13, please contact us at <a href="mailto:privacy@towncrierapp.com">privacy@towncrierapp.com</a> and we will delete it.</p>
+
+      <h2>11. International Users</h2>
+      <p>Town Crier is operated from the United States. If you use the App from outside the United States, any information we collect will be transferred to and processed in the United States, which may have different data protection laws than your country.</p>
+
+      <h2>12. Changes to This Policy</h2>
+      <p>We may update this Privacy Policy from time to time. When we do, we will update the "Effective date" at the top of this policy. If we make significant changes, we will notify users through the App or through an in-App notice before the changes take effect.</p>
+      <p>Your continued use of the App after changes take effect constitutes acceptance of the updated policy.</p>
+
+      <h2>13. Contact Us</h2>
+      <p>If you have questions, concerns, or requests about this Privacy Policy or your data, please contact us at:</p>
+      <p><strong><a href="mailto:privacy@towncrierapp.com">privacy@towncrierapp.com</a></strong></p>
+      <p>We aim to respond to all inquiries within 14 days.</p>
+
+      <hr>
+
+      <p><em>This policy was last updated on July 13, 2026.</em></p>
+    </main>
+
+    <footer>
+      <p>&copy; 2026 Town Crier</p>
+    </footer>
+  </div>
+</body>
+</html>
