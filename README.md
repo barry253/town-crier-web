@@ -1,6 +1,6 @@
 # Town Crier — Public Web Site
 
-Public web content for [Town Crier](https://github.com/barry253/town-crier), the audio-first driving companion app for Android.
+Public web content for Town Crier, the audio-first driving companion app for Android.
 
 ## What's here
 
