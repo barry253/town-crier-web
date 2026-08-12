@@ -174,7 +174,7 @@
   <div id="startTitle">Town Crier</div>
   <div id="startSub">Drive through any town and hear facts about where you are — hands-free, screen on.</div>
   <button id="startBtn" onclick="startDemo()">Start Demo</button>
-  <div id="startStatus"></div>
+  <div id="startStatus" style="display:none;"></div>
 </div>
 
 <!-- HERO -->
@@ -614,15 +614,36 @@ function startDemo() {
 
   if (!('geolocation' in navigator)) {
     townNameEl.textContent = 'Geolocation not available';
+    document.getElementById('startStatus').textContent = 'Geolocation is not supported by this browser.';
     return;
   }
 
   showChip('LOCATING...', 'warning');
   townNameEl.textContent = 'Finding your town…';
 
-  navigator.geolocation.watchPosition(onPosition, onGeoError, {
-    enableHighAccuracy: true, maximumAge: 5000, timeout: 15000
-  });
+  // On iOS Safari, watchPosition alone may not trigger the permission dialog.
+  // Call getCurrentPosition first to force the prompt, then start the watch.
+  const permTimeout = setTimeout(() => {
+    document.getElementById('startStatus') &&
+      (document.getElementById('startStatus').style.display = 'block') &&
+      (document.getElementById('startStatus').textContent =
+        'Location prompt not appearing? Check iOS Settings → Privacy → Location Services → Safari.');
+  }, 5000);
+
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      clearTimeout(permTimeout);
+      onPosition(pos);
+      navigator.geolocation.watchPosition(onPosition, onGeoError, {
+        enableHighAccuracy: true, maximumAge: 5000, timeout: 15000
+      });
+    },
+    (err) => {
+      clearTimeout(permTimeout);
+      onGeoError(err);
+    },
+    { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+  );
 }
 </script>
 </body>
