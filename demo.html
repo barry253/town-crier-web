@@ -179,9 +179,13 @@
         const addr = result.address || {};
         const rawTown = addr.city || addr.town || addr.village || addr.hamlet || addr.suburb || '';
 
-        // state_code may be lowercase (e.g. "ga") or absent — normalise to uppercase
+        // state_code may be lowercase, absent, or provided as ISO3166-2-lvl4 ("US-GA")
         let stateCode = (addr.state_code || '').toUpperCase();
-        // fallback: try to match addr.state against our STATE_SLUGS values
+        if (!stateCode && addr['ISO3166-2-lvl4']) {
+          // "US-GA" → "GA"
+          const parts = addr['ISO3166-2-lvl4'].split('-');
+          stateCode = (parts[parts.length - 1] || '').toUpperCase();
+        }
         if (!stateCode && addr.state) {
           const stateSlug = slugify(addr.state);
           stateCode = Object.keys(STATE_SLUGS).find(k => STATE_SLUGS[k] === stateSlug) || '';
