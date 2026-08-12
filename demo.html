@@ -140,7 +140,7 @@
       setSource('');
       setStatus('Fetching facts...');
       try {
-        const res = await fetch(R2_BASE + '/' + slug + '.json');
+        const res = await fetch('/facts?slug=' + slug);
         if (!res.ok) throw new Error('not found');
         const data = await res.json();
         const facts = data.facts || [];
@@ -165,7 +165,6 @@
     async function onPosition(pos) {
       const { latitude: lat, longitude: lon } = pos.coords;
 
-      // Debounce — skip if moved less than 50m from last geocode point
       if (lastGeocodedLat !== null) {
         const dist = haversineMetres(lat, lon, lastGeocodedLat, lastGeocodedLon);
         if (dist < 50) return;
@@ -179,15 +178,24 @@
         const result = await geocode(lat, lon);
         const addr = result.address || {};
         const rawTown = addr.city || addr.town || addr.village || addr.hamlet || addr.suburb || '';
-        const rawState = addr.state_code ? addr.state_code.toUpperCase() : '';
+
+        // state_code may be lowercase (e.g. "ga") or absent — normalise to uppercase
+        let stateCode = (addr.state_code || '').toUpperCase();
+        // fallback: try to match addr.state against our STATE_SLUGS values
+        if (!stateCode && addr.state) {
+          const stateSlug = slugify(addr.state);
+          stateCode = Object.keys(STATE_SLUGS).find(k => STATE_SLUGS[k] === stateSlug) || '';
+        }
+
         if (!rawTown) { setStatus('Town not found for this location'); return; }
 
         const town = normalizeRawTown(rawTown);
-        if (town === currentTown) { setStatus('Ready'); return; }
+        const townKey = town + '|' + stateCode;
+        if (townKey === currentTown) { setStatus('Ready'); return; }
 
-        currentTown = town;
+        currentTown = townKey;
         setTown(town);
-        await onTownChanged(town, rawState, rawState);
+        await onTownChanged(town, stateCode);
       } catch (e) {
         setStatus('Geocode error: ' + e.message);
       }
