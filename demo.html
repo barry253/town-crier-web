@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Town Crier — Demo</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .demo-wrap { max-width: 520px; margin: 48px auto; padding: 0 20px; }
+    .demo-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #888; margin-bottom: 6px; }
+    .demo-town { font-size: 2rem; font-weight: 600; margin: 0 0 8px; color: #f5f5f5; min-height: 2.4rem; }
+    .demo-fact { font-size: 1rem; line-height: 1.6; color: #ccc; min-height: 3rem; margin-bottom: 16px; }
+    .demo-status { font-size: 0.8rem; color: #666; margin-bottom: 32px; min-height: 1.2rem; }
+    .demo-btn { display: inline-block; padding: 12px 28px; background: #1a1a1a; border: 1px solid #444; border-radius: 6px; color: #f5f5f5; font-size: 0.95rem; cursor: pointer; transition: border-color 0.2s; }
+    .demo-btn:hover { border-color: #aaa; }
+    .demo-btn:disabled { opacity: 0.4; cursor: default; }
+    .demo-source { font-size: 0.75rem; color: #555; margin-top: 4px; }
+    .demo-header { font-size: 0.8rem; color: #555; margin-bottom: 40px; letter-spacing: 0.05em; }
+  </style>
+</head>
+<body>
+  <div class="demo-wrap">
+    <div class="demo-header">Town Crier — Demo</div>
+    <div class="demo-label">Current town</div>
+    <div class="demo-town" id="town">—</div>
+    <div class="demo-fact" id="fact"></div>
+    <div class="demo-source" id="source"></div>
+    <div class="demo-status" id="status">Press Start to begin</div>
+    <button class="demo-btn" id="startBtn" onclick="startDemo()">Start Demo</button>
+  </div>
+
+  <script>
+    const R2_BASE = 'https://pub-1feff31ff8ec4ecfafa5cf1a7a5146c7.r2.dev/facts';
+    const CITY_OF_EXCEPTIONS = new Set(['City of Industry', 'City of Commerce']);
+
+    const STATE_SLUGS = {
+      AL:'alabama',AK:'alaska',AZ:'arizona',AR:'arkansas',CA:'california',
+      CO:'colorado',CT:'connecticut',DE:'delaware',FL:'florida',GA:'georgia',
+      HI:'hawaii',ID:'idaho',IL:'illinois',IN:'indiana',IA:'iowa',KS:'kansas',
+      KY:'kentucky',LA:'louisiana',ME:'maine',MD:'maryland',MA:'massachusetts',
+      MI:'michigan',MN:'minnesota',MS:'mississippi',MO:'missouri',MT:'montana',
+      NE:'nebraska',NV:'nevada',NH:'new-hampshire',NJ:'new-jersey',NM:'new-mexico',
+      NY:'new-york',NC:'north-carolina',ND:'north-dakota',OH:'ohio',OK:'oklahoma',
+      OR:'oregon',PA:'pennsylvania',RI:'rhode-island',SC:'south-carolina',
+      SD:'south-dakota',TN:'tennessee',TX:'texas',UT:'utah',VT:'vermont',
+      VA:'virginia',WA:'washington',WV:'west-virginia',WI:'wisconsin',WY:'wyoming',
+      DC:'dc'
+    };
+
+    const TOWN_SUBSTITUTIONS = [
+      ['Saint ', 'St '],
+      ['St.', 'St'],
+      ['Mt.', 'Mt']
+    ];
+
+    function normalizeRawTown(rawTown) {
+      let s = rawTown;
+      if (s.startsWith('City of ') && !CITY_OF_EXCEPTIONS.has(s.trim())) {
+        s = s.slice('City of '.length);
+      }
+      return s
+        .replace(/^Village of /, '')
+        .replace(/^Town of /, '')
+        .replace(/\s+County$/, '')
+        .replace(/ Township$/i, '')
+        .replace(/ Twp\.?$/i, '')
+        .trim();
+    }
+
+    function slugify(value) {
+      return value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    }
+
+    function factLibrarySlug(townName, stateCode) {
+      let normalized = townName;
+      for (const [from, to] of TOWN_SUBSTITUTIONS) {
+        normalized = normalized.split(from).join(to);
+      }
+      // Metro slug exceptions
+      if (normalized === 'New York') return 'new-york-city';
+      if (normalized === 'Washington' && stateCode === 'DC') return 'washington-dc';
+      const stateSlug = STATE_SLUGS[stateCode.toUpperCase()] ?? stateCode.toLowerCase();
+      return slugify(normalized + '-' + stateSlug);
+    }
+
+    function haversineMetres(lat1, lon1, lat2, lon2) {
+      const R = 6371000;
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
+      return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    }
+
+    let lastGeocodedLat = null;
+    let lastGeocodedLon = null;
+    let currentTown = null;
+    let watchId = null;
+    let audioUnlocked = false;
+
+    function setStatus(msg) { document.getElementById('status').textContent = msg; }
+    function setTown(name) { document.getElementById('town').textContent = name || '—'; }
+    function setFact(text) { document.getElementById('fact').textContent = text || ''; }
+    function setSource(text) { document.getElementById('source').textContent = text || ''; }
+
+    async function playFact(slug, factText) {
+      const clipUrl = R2_BASE + '/' + slug + '.mp3';
+      try {
+        setStatus('Loading audio clip...');
+        const audio = new Audio(clipUrl);
+        await new Promise((resolve, reject) => {
+          audio.oncanplaythrough = () => {
+            audio.play().then(resolve).catch(reject);
+          };
+          audio.onerror = reject;
+          audio.load();
+          setTimeout(reject, 8000); // 8s timeout
+        });
+        setStatus('Playing Kokoro clip');
+        setSource('Audio: Kokoro TTS');
+        audio.onended = () => setStatus('Ready');
+      } catch {
+        // Fallback to Web Speech
+        setStatus('Using TTS fallback');
+        setSource('Audio: Web Speech');
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+          const utt = new SpeechSynthesisUtterance(factText);
+          utt.rate = 0.95;
+          utt.onend = () => setStatus('Ready');
+          window.speechSynthesis.speak(utt);
+        } else {
+          setStatus('No audio available');
+        }
+      }
+    }
+
+    async function onTownChanged(townName, stateCode, rawState) {
+      const slug = factLibrarySlug(townName, stateCode);
+      setFact('');
+      setSource('');
+      setStatus('Fetching facts...');
+      try {
+        const res = await fetch(R2_BASE + '/' + slug + '.json');
+        if (!res.ok) throw new Error('not found');
+        const data = await res.json();
+        const facts = data.facts || [];
+        if (!facts.length) throw new Error('empty');
+        const fact = facts[Math.floor(Math.random() * facts.length)];
+        const text = fact.text || fact;
+        setFact(text);
+        await playFact(slug, text);
+      } catch {
+        setFact('');
+        setSource('');
+        setStatus('No facts available for this town');
+      }
+    }
+
+    async function geocode(lat, lon) {
+      const res = await fetch('/nominatim?lat=' + lat + '&lon=' + lon);
+      if (!res.ok) throw new Error('Nominatim error');
+      return res.json();
+    }
+
+    async function onPosition(pos) {
+      const { latitude: lat, longitude: lon } = pos.coords;
+
+      // Debounce — skip if moved less than 50m from last geocode point
+      if (lastGeocodedLat !== null) {
+        const dist = haversineMetres(lat, lon, lastGeocodedLat, lastGeocodedLon);
+        if (dist < 50) return;
+      }
+
+      lastGeocodedLat = lat;
+      lastGeocodedLon = lon;
+
+      setStatus('Locating...');
+      try {
+        const result = await geocode(lat, lon);
+        const addr = result.address || {};
+        const rawTown = addr.city || addr.town || addr.village || addr.hamlet || addr.suburb || '';
+        const rawState = addr.state_code ? addr.state_code.toUpperCase() : '';
+        if (!rawTown) { setStatus('Town not found for this location'); return; }
+
+        const town = normalizeRawTown(rawTown);
+        if (town === currentTown) { setStatus('Ready'); return; }
+
+        currentTown = town;
+        setTown(town);
+        await onTownChanged(town, rawState, rawState);
+      } catch (e) {
+        setStatus('Geocode error: ' + e.message);
+      }
+    }
+
+    function onError(err) {
+      if (err.code === 1) {
+        setStatus('Location access denied. Please allow location and reload.');
+      } else {
+        setStatus('Location error: ' + err.message);
+      }
+    }
+
+    function startDemo() {
+      const btn = document.getElementById('startBtn');
+      btn.disabled = true;
+      btn.textContent = 'Running...';
+      audioUnlocked = true;
+
+      if (!('geolocation' in navigator)) {
+        setStatus('Geolocation not available in this browser.');
+        return;
+      }
+
+      setStatus('Requesting location...');
+      watchId = navigator.geolocation.watchPosition(onPosition, onError, {
+        enableHighAccuracy: true,
+        maximumAge: 5000,
+        timeout: 15000
+      });
+    }
+  </script>
+</body>
+</html>
