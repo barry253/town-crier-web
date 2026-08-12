@@ -4,233 +4,626 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Town Crier — Demo</title>
-  <link rel="stylesheet" href="style.css">
   <style>
-    .demo-wrap { max-width: 520px; margin: 48px auto; padding: 0 20px; }
-    .demo-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #888; margin-bottom: 6px; }
-    .demo-town { font-size: 2rem; font-weight: 600; margin: 0 0 8px; color: #f5f5f5; min-height: 2.4rem; }
-    .demo-fact { font-size: 1rem; line-height: 1.6; color: #ccc; min-height: 3rem; margin-bottom: 16px; }
-    .demo-status { font-size: 0.8rem; color: #666; margin-bottom: 32px; min-height: 1.2rem; }
-    .demo-btn { display: inline-block; padding: 12px 28px; background: #1a1a1a; border: 1px solid #444; border-radius: 6px; color: #f5f5f5; font-size: 0.95rem; cursor: pointer; transition: border-color 0.2s; }
-    .demo-btn:hover { border-color: #aaa; }
-    .demo-btn:disabled { opacity: 0.4; cursor: default; }
-    .demo-source { font-size: 0.75rem; color: #555; margin-top: 4px; }
-    .demo-header { font-size: 0.8rem; color: #555; margin-bottom: 40px; letter-spacing: 0.05em; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; background: #111317; color: #fff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; overflow: hidden; }
+
+    /* ── HERO ── */
+    #hero {
+      position: fixed; inset: 0;
+      background: #111317;
+      transition: opacity 0.2s;
+    }
+    #heroImg {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transition: opacity 0.4s;
+    }
+    /* generated gradient fallback — shown when no image */
+    #generatedFallback {
+      position: absolute; inset: 0;
+      background: #102033;
+      overflow: hidden;
+      display: none;
+    }
+    #generatedFallback .orb1 { position:absolute; width:560px; height:560px; border-radius:280px; background:rgba(126,224,106,0.15); top:80px; right:-210px; }
+    #generatedFallback .orb2 { position:absolute; width:310px; height:310px; border-radius:155px; background:rgba(255,255,255,0.055); top:400px; left:-92px; }
+    #generatedFallback .orb3 { position:absolute; width:190px; height:190px; border-radius:95px;  background:rgba(217,138,43,0.08); bottom:145px; right:-38px; }
+    #generatedFallback .road1 { position:absolute; width:780px; height:3px; background:rgba(255,255,255,0.10); transform:rotate(-17deg); top:575px; left:-170px; }
+    #generatedFallback .road2 { position:absolute; width:760px; height:2px; background:rgba(217,138,43,0.18);  transform:rotate(-17deg); top:640px; left:-185px; }
+    #generatedFallback .road3 { position:absolute; width:720px; height:1px; background:rgba(255,255,255,0.07); transform:rotate(-17deg); top:720px; left:-150px; }
+
+    /* scrims */
+    #topScrim {
+      position: fixed; top: 0; left: 0; right: 0;
+      background: rgba(0,0,0,0.40);
+      padding: 52px 40px 20px;
+      display: flex; flex-direction: column; align-items: center;
+      z-index: 10;
+    }
+    #photoScrim { position:fixed; inset:0; background:rgba(0,0,0,0.08); pointer-events:none; z-index:9; }
+    #bottomScrim { position:fixed; bottom:0; left:0; right:0; height:20%; background:rgba(17,19,23,0.50); pointer-events:none; z-index:9; }
+
+    /* ── CHIP ── */
+    #chipContainer { height: 20px; margin-bottom: 2px; display:flex; align-items:center; justify-content:center; }
+    #chip {
+      display: none;
+      background: rgba(15,8,0,0.72); color: #D98A2B;
+      border-radius: 18px; padding: 4px 15px;
+      font-size: 10.5px; font-weight: 900; letter-spacing: 1.8px; line-height: 14px;
+      text-transform: uppercase;
+    }
+    #chip.warning { background: rgba(60,26,0,0.82); color: #F3A34A; }
+    #chip.visible { display: inline-block; }
+
+    /* ── TOWN TITLE ── */
+    #townName {
+      color: #fff; font-size: 54px; font-weight: 900; text-align: center;
+      line-height: 1.04; letter-spacing: -1.2px; width: 100%;
+      text-shadow: 0 3px 12px rgba(0,0,0,0.88);
+    }
+    #countyLine {
+      color: rgba(255,255,255,0.82); font-size: 20px; font-weight: 800;
+      text-align: center; margin-top: 2px;
+      text-shadow: 0 2px 9px rgba(0,0,0,0.78);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;
+    }
+
+    /* ── PROGRESS SEGMENTS ── */
+    #progress { display:flex; gap:8px; align-self:stretch; margin-top:10px; }
+    .seg { flex:1; height:4px; background:rgba(255,255,255,0.26); border-radius:3px; }
+    .seg.active { background:#D98A2B; }
+    .seg.checking { background:rgba(217,138,43,0.76); }
+
+    /* ── FACT TEXT (below hero in demo — distinct from app which is audio-only) ── */
+    #factCard {
+      position: fixed; left: 24px; right: 24px;
+      background: rgba(44,44,46,0.92);
+      border: 1px solid rgba(217,138,43,0.45);
+      border-radius: 22px; padding: 20px;
+      z-index: 10;
+      display: none;
+    }
+    #factText {
+      font-family: Georgia, 'Times New Roman', serif;
+      color: rgba(255,255,255,0.86); font-size: 18px; line-height: 1.56; font-weight: 500;
+    }
+    #factSource { color: rgba(255,255,255,0.40); font-size: 11px; margin-top: 8px; }
+
+    /* ── ATTRIBUTION ── */
+    #attribution {
+      position: fixed; bottom: 176px; left: 24px; right: 24px;
+      z-index: 11; display: none; text-align: left;
+    }
+    #attributionText { color: rgba(255,255,255,0.55); font-size: 11px; line-height: 1.4; }
+    #attributionLink { color: #D98A2B; font-size: 11px; font-weight: 600; text-decoration: none; }
+    #attributionLink:hover { text-decoration: underline; }
+
+    /* ── CONTROL CARD ── */
+    #controlCard {
+      position: fixed; left: 24px; right: 24px; bottom: 76px; height: 96px;
+      background: rgba(31,32,35,0.72);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 30px;
+      box-shadow: 0 0 18px rgba(217,138,43,0.10);
+      z-index: 20;
+    }
+    .sideCtrl {
+      width: 62px; min-height: 64px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 5px; cursor: pointer; background: none; border: none; color: inherit;
+    }
+    .sideCtrlIcon {
+      width: 36px; height: 36px; border-radius: 18px;
+      border: 2px solid rgba(255,255,255,0.13);
+      background: rgba(255,255,255,0.02);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px; color: rgba(255,255,255,0.86);
+    }
+    .sideCtrlLabel { color: rgba(255,255,255,0.76); font-size: 8.5px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; }
+    #primaryCtrl {
+      width: 72px; height: 72px; border-radius: 36px;
+      background: #D98A2B;
+      box-shadow: 0 0 20px rgba(217,138,43,0.30);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; border: none;
+      font-size: 30px; font-weight: 900; color: #0a1600; letter-spacing: -2px;
+    }
+    #primaryCtrl.speaking { letter-spacing: -3px; }
+
+    /* ── BOTTOM NAV ── */
+    #bottomNav {
+      position: fixed; bottom: 0; left: 0; right: 0; height: 60px;
+      background: #1a1a1b; border-top: 1px solid rgba(255,255,255,0.10);
+      display: flex; align-items: center; padding: 0 24px; gap: 12px;
+      z-index: 20;
+    }
+    .navItem { flex:1; height:44px; border-radius:13px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; cursor:pointer; border:none; background:transparent; }
+    .navItem.active { background:#D98A2B; }
+    .navIcon { font-size:18px; font-weight:900; color:rgba(255,255,255,0.44); }
+    .navItem.active .navIcon { color:#0a1600; }
+    .navLabel { font-size:10px; font-weight:900; letter-spacing:0.9px; text-transform:uppercase; color:rgba(255,255,255,0.48); }
+    .navItem.active .navLabel { color:#0a1600; }
+
+    /* ── START SCREEN ── */
+    #startScreen {
+      position: fixed; inset: 0; background: #111317;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 24px; z-index: 100; padding: 40px;
+    }
+    #startTitle { font-size: 28px; font-weight: 900; letter-spacing: -0.5px; text-align:center; }
+    #startSub { color: rgba(255,255,255,0.55); font-size: 15px; text-align:center; line-height:1.5; }
+    #startBtn {
+      background: #D98A2B; color: #0a1600;
+      border: none; border-radius: 18px; padding: 14px 36px;
+      font-size: 16px; font-weight: 900; letter-spacing: 0.5px;
+      cursor: pointer; text-transform: uppercase; letter-spacing: 1.2px;
+    }
+    #startBtn:hover { background: #c47a22; }
+    #startStatus { color: rgba(255,255,255,0.40); font-size: 13px; text-align:center; min-height:20px; }
   </style>
 </head>
 <body>
-  <div class="demo-wrap">
-    <div class="demo-header">Town Crier — Demo</div>
-    <div class="demo-label">Current town</div>
-    <div class="demo-town" id="town">—</div>
-    <div class="demo-fact" id="fact"></div>
-    <div class="demo-source" id="source"></div>
-    <div class="demo-status" id="status">Press Start to begin</div>
-    <button class="demo-btn" id="startBtn" onclick="startDemo()">Start Demo</button>
+
+<!-- START SCREEN -->
+<div id="startScreen">
+  <div id="startTitle">Town Crier</div>
+  <div id="startSub">Drive through any town and hear facts about where you are — hands-free, screen on.</div>
+  <button id="startBtn" onclick="startDemo()">Start Demo</button>
+  <div id="startStatus"></div>
+</div>
+
+<!-- HERO -->
+<div id="hero">
+  <div id="generatedFallback">
+    <div class="orb1"></div><div class="orb2"></div><div class="orb3"></div>
+    <div class="road1"></div><div class="road2"></div><div class="road3"></div>
   </div>
+  <img id="heroImg" alt="" style="opacity:0;" />
+</div>
+<div id="photoScrim"></div>
+<div id="bottomScrim"></div>
 
-  <script>
-    const R2_BASE = 'https://pub-1feff31ff8ec4ecfafa5cf1a7a5146c7.r2.dev/facts';
-    const CITY_OF_EXCEPTIONS = new Set(['City of Industry', 'City of Commerce']);
+<!-- TOP SCRIM / TEXT -->
+<div id="topScrim">
+  <div id="chipContainer"><span id="chip">NOW ENTERING</span></div>
+  <div id="townName">Town Crier</div>
+  <div id="countyLine"></div>
+  <div id="progress"></div>
+</div>
 
-    const STATE_SLUGS = {
-      AL:'alabama',AK:'alaska',AZ:'arizona',AR:'arkansas',CA:'california',
-      CO:'colorado',CT:'connecticut',DE:'delaware',FL:'florida',GA:'georgia',
-      HI:'hawaii',ID:'idaho',IL:'illinois',IN:'indiana',IA:'iowa',KS:'kansas',
-      KY:'kentucky',LA:'louisiana',ME:'maine',MD:'maryland',MA:'massachusetts',
-      MI:'michigan',MN:'minnesota',MS:'mississippi',MO:'missouri',MT:'montana',
-      NE:'nebraska',NV:'nevada',NH:'new-hampshire',NJ:'new-jersey',NM:'new-mexico',
-      NY:'new-york',NC:'north-carolina',ND:'north-dakota',OH:'ohio',OK:'oklahoma',
-      OR:'oregon',PA:'pennsylvania',RI:'rhode-island',SC:'south-carolina',
-      SD:'south-dakota',TN:'tennessee',TX:'texas',UT:'utah',VT:'vermont',
-      VA:'virginia',WA:'washington',WV:'west-virginia',WI:'wisconsin',WY:'wyoming',
-      DC:'dc'
+<!-- FACT CARD -->
+<div id="factCard">
+  <div id="factText"></div>
+  <div id="factSource"></div>
+</div>
+
+<!-- ATTRIBUTION -->
+<div id="attribution">
+  <div id="attributionText"></div>
+</div>
+
+<!-- CONTROL CARD -->
+<div id="controlCard">
+  <button class="sideCtrl" onclick="toggleMute()">
+    <div class="sideCtrlIcon" id="muteIcon">🔊</div>
+    <div class="sideCtrlLabel" id="muteLabel">Audio On</div>
+  </button>
+  <button id="primaryCtrl" onclick="onPrimaryTap()">▶</button>
+  <button class="sideCtrl" onclick="replayTown()">
+    <div class="sideCtrlIcon">↺</div>
+    <div class="sideCtrlLabel">Replay</div>
+  </button>
+</div>
+
+<!-- BOTTOM NAV -->
+<div id="bottomNav">
+  <button class="navItem active">
+    <div class="navIcon">▷</div>
+    <div class="navLabel">Now</div>
+  </button>
+  <button class="navItem">
+    <div class="navIcon">◷</div>
+    <div class="navLabel">History</div>
+  </button>
+</div>
+
+<script>
+// ── CONSTANTS ──
+const R2_BASE = 'https://pub-1feff31ff8ec4ecfafa5cf1a7a5146c7.r2.dev/facts';
+const CITY_OF_EXCEPTIONS = new Set(['City of Industry', 'City of Commerce']);
+const ENTERING_CHIP_MS = 5200;
+const HERO_DIM_OPACITY = 0.4;
+
+const STATE_SLUGS = {
+  AL:'alabama',AK:'alaska',AZ:'arizona',AR:'arkansas',CA:'california',
+  CO:'colorado',CT:'connecticut',DE:'delaware',FL:'florida',GA:'georgia',
+  HI:'hawaii',ID:'idaho',IL:'illinois',IN:'indiana',IA:'iowa',KS:'kansas',
+  KY:'kentucky',LA:'louisiana',ME:'maine',MD:'maryland',MA:'massachusetts',
+  MI:'michigan',MN:'minnesota',MS:'mississippi',MO:'missouri',MT:'montana',
+  NE:'nebraska',NV:'nevada',NH:'new-hampshire',NJ:'new-jersey',NM:'new-mexico',
+  NY:'new-york',NC:'north-carolina',ND:'north-dakota',OH:'ohio',OK:'oklahoma',
+  OR:'oregon',PA:'pennsylvania',RI:'rhode-island',SC:'south-carolina',
+  SD:'south-dakota',TN:'tennessee',TX:'texas',UT:'utah',VT:'vermont',
+  VA:'virginia',WA:'washington',WV:'west-virginia',WI:'wisconsin',WY:'wyoming',
+  DC:'dc'
+};
+
+const TOWN_SUBSTITUTIONS = [['Saint ','St '],['St.','St'],['Mt.','Mt']];
+
+// ── SLUG / NORMALIZATION ──
+function normalizeRawTown(s) {
+  if (s.startsWith('City of ') && !CITY_OF_EXCEPTIONS.has(s.trim()))
+    s = s.slice('City of '.length);
+  return s
+    .replace(/^Village of /, '')
+    .replace(/^Town of /, '')
+    .replace(/\s+County$/, '')
+    .replace(/ Township$/i, '')
+    .replace(/ Twp\.?$/i, '')
+    .trim();
+}
+
+function slugify(v) {
+  return v.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+}
+
+function factLibrarySlug(townName, stateCode) {
+  let n = townName;
+  for (const [f,t] of TOWN_SUBSTITUTIONS) n = n.split(f).join(t);
+  if (n === 'New York') return 'new-york-city';
+  if (n === 'Washington' && stateCode === 'DC') return 'washington-dc';
+  const st = STATE_SLUGS[stateCode.toUpperCase()] ?? stateCode.toLowerCase();
+  return slugify(n + '-' + st);
+}
+
+// ── STATE ──
+let isMuted = false;
+let isSpeaking = false;
+let currentTownKey = null;
+let currentSlug = null;
+let currentFacts = [];
+let currentFactIndex = 0;
+let factRotationMap = {};
+let lastGeocodedLat = null;
+let lastGeocodedLon = null;
+let geocodeInFlight = false;
+let chipTimer = null;
+let checkingPulseInterval = null;
+let currentAudio = null;
+
+// ── DOM REFS ──
+const hero = document.getElementById('hero');
+const heroImg = document.getElementById('heroImg');
+const generatedFallback = document.getElementById('generatedFallback');
+const chip = document.getElementById('chip');
+const chipContainer = document.getElementById('chipContainer');
+const townNameEl = document.getElementById('townName');
+const countyLineEl = document.getElementById('countyLine');
+const progressEl = document.getElementById('progress');
+const factCard = document.getElementById('factCard');
+const factTextEl = document.getElementById('factText');
+const factSourceEl = document.getElementById('factSource');
+const attributionEl = document.getElementById('attribution');
+const attributionTextEl = document.getElementById('attributionText');
+const muteIcon = document.getElementById('muteIcon');
+const muteLabel = document.getElementById('muteLabel');
+const primaryCtrl = document.getElementById('primaryCtrl');
+
+// ── UTILITY ──
+function haversineMetres(lat1,lon1,lat2,lon2) {
+  const R=6371000, dLat=(lat2-lat1)*Math.PI/180, dLon=(lon2-lon1)*Math.PI/180;
+  const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+
+// ── CHIP ──
+function showChip(text, cls) {
+  if (chipTimer) clearTimeout(chipTimer);
+  chip.textContent = text;
+  chip.className = cls ? 'visible ' + cls : 'visible';
+  chipTimer = setTimeout(() => { chip.className = ''; }, ENTERING_CHIP_MS);
+}
+function clearChip() { if (chipTimer) clearTimeout(chipTimer); chip.className = ''; }
+
+// ── PROGRESS SEGMENTS ──
+function renderSegments(count, activeIdx, checking) {
+  progressEl.innerHTML = '';
+  for (let i = 0; i < count; i++) {
+    const s = document.createElement('div');
+    s.className = 'seg' + (i === activeIdx ? (checking ? ' checking' : ' active') : '');
+    progressEl.appendChild(s);
+  }
+}
+
+// ── HERO IMAGE ──
+function dimHero() { hero.style.opacity = HERO_DIM_OPACITY; }
+function undimHero() { hero.style.opacity = '1'; }
+
+function setHeroImage(url, fx, fy) {
+  if (!url) {
+    heroImg.style.opacity = '0';
+    generatedFallback.style.display = 'block';
+    return;
+  }
+  generatedFallback.style.display = 'none';
+  heroImg.style.objectPosition = (typeof fx==='number' && typeof fy==='number')
+    ? (fx*100)+'% '+(fy*100)+'%' : 'center';
+  heroImg.style.opacity = '0';
+  heroImg.onload = () => { heroImg.style.opacity = '1'; undimHero(); };
+  heroImg.onerror = () => {
+    heroImg.style.opacity = '0';
+    generatedFallback.style.display = 'block';
+    undimHero();
+  };
+  heroImg.src = url;
+}
+
+function setAttribution(attr) {
+  if (!attr || !attr.author) { attributionEl.style.display = 'none'; return; }
+  let html = 'Photo by ' + attr.author;
+  if (attr.license) html += ' · ' + attr.license;
+  if (attr.sourceUrl) {
+    html = 'Photo by ' + attr.author + ' · ' + attr.license +
+      ' · <a id="attributionLink" href="' + attr.sourceUrl + '" target="_blank" rel="noopener">View source</a>';
+  }
+  attributionTextEl.innerHTML = html;
+  attributionEl.style.display = 'block';
+}
+
+// ── AUDIO ──
+async function playClip(slug, factIdx) {
+  if (isMuted) return;
+  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+
+  const clipUrl = R2_BASE + '/' + slug + '/kokoro-af_heart/fact-' + factIdx + '.mp3';
+  setPrimary('⏸', true);
+
+  try {
+    const audio = new Audio(clipUrl);
+    currentAudio = audio;
+    await new Promise((resolve, reject) => {
+      audio.oncanplaythrough = () => audio.play().then(resolve).catch(reject);
+      audio.onerror = reject;
+      audio.load();
+      setTimeout(reject, 10000);
+    });
+    isSpeaking = true;
+    audio.onended = () => { isSpeaking = false; currentAudio = null; setPrimary('▶', false); };
+  } catch {
+    isSpeaking = false;
+    currentAudio = null;
+    setPrimary('▶', false);
+    ttsSpeak(currentFacts[factIdx] || '');
+  }
+}
+
+async function playWelcome(slug, townName) {
+  if (isMuted) return;
+  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+
+  const clipUrl = R2_BASE + '/' + slug + '/kokoro-af_heart/welcome.mp3';
+  setPrimary('⏸', true);
+  isSpeaking = true;
+
+  try {
+    const audio = new Audio(clipUrl);
+    currentAudio = audio;
+    await new Promise((resolve, reject) => {
+      audio.oncanplaythrough = () => audio.play().then(resolve).catch(reject);
+      audio.onerror = reject;
+      audio.load();
+      setTimeout(reject, 10000);
+    });
+    audio.onended = () => {
+      isSpeaking = false; currentAudio = null; setPrimary('▶', false);
+      // auto-play the current fact after welcome
+      if (currentFacts.length > 0) {
+        setTimeout(() => playClip(slug, currentFactIndex), 800);
+      }
     };
+  } catch {
+    isSpeaking = false;
+    currentAudio = null;
+    setPrimary('▶', false);
+    ttsSpeak('Now entering ' + townName);
+  }
+}
 
-    const TOWN_SUBSTITUTIONS = [
-      ['Saint ', 'St '],
-      ['St.', 'St'],
-      ['Mt.', 'Mt']
-    ];
+function ttsSpeak(text) {
+  if (isMuted || !('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.rate = 0.95;
+  isSpeaking = true;
+  setPrimary('⏸', true);
+  u.onend = () => { isSpeaking = false; setPrimary('▶', false); };
+  window.speechSynthesis.speak(u);
+}
 
-    function normalizeRawTown(rawTown) {
-      let s = rawTown;
-      if (s.startsWith('City of ') && !CITY_OF_EXCEPTIONS.has(s.trim())) {
-        s = s.slice('City of '.length);
-      }
-      return s
-        .replace(/^Village of /, '')
-        .replace(/^Town of /, '')
-        .replace(/\s+County$/, '')
-        .replace(/ Township$/i, '')
-        .replace(/ Twp\.?$/i, '')
-        .trim();
+// ── CONTROLS ──
+function setPrimary(icon, speaking) {
+  primaryCtrl.textContent = icon;
+  primaryCtrl.className = speaking ? 'speaking' : '';
+}
+
+function toggleMute() {
+  isMuted = !isMuted;
+  if (isMuted) {
+    if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+    if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+    isSpeaking = false;
+    setPrimary('▶', false);
+    muteIcon.textContent = '🔇'; muteLabel.textContent = 'Muted';
+  } else {
+    muteIcon.textContent = '🔊'; muteLabel.textContent = 'Audio On';
+  }
+}
+
+function onPrimaryTap() {
+  if (isSpeaking) {
+    if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+    if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+    isSpeaking = false; setPrimary('▶', false); return;
+  }
+  if (!currentSlug || !currentFacts.length) return;
+  playClip(currentSlug, currentFactIndex);
+}
+
+function replayTown() {
+  if (!currentSlug) return;
+  playWelcome(currentSlug, townNameEl.textContent);
+}
+
+// ── FACT DISPLAY ──
+function showFact(facts, idx) {
+  const f = facts[idx];
+  if (!f) { factCard.style.display = 'none'; return; }
+  const text = f.text || f;
+  factTextEl.textContent = text;
+  factSourceEl.textContent = f.category ? f.category.charAt(0).toUpperCase() + f.category.slice(1) : '';
+  factCard.style.display = 'block';
+  // position fact card above control card
+  factCard.style.bottom = (96 + 76 + 16 + 12) + 'px';
+}
+
+// ── TOWN CHANGED ──
+async function onTownChanged(town, stateCode, county, rawState) {
+  const slug = factLibrarySlug(town, stateCode);
+  currentSlug = slug;
+  currentFacts = [];
+  currentFactIndex = 0;
+
+  dimHero();
+  showChip('NOW ENTERING');
+  townNameEl.textContent = town;
+  countyLineEl.textContent = county || '';
+  factCard.style.display = 'none';
+  attributionEl.style.display = 'none';
+  heroImg.style.opacity = '0';
+  generatedFallback.style.display = 'block';
+  renderSegments(1, 0, true);
+
+  try {
+    const res = await fetch('/facts?slug=' + slug);
+    if (!res.ok) throw new Error('not found');
+    const data = await res.json();
+    const facts = data.facts || [];
+    currentFacts = facts;
+
+    // pick fact index via round-robin per town
+    const prevIdx = factRotationMap[slug] ?? 0;
+    currentFactIndex = prevIdx % Math.max(facts.length, 1);
+    factRotationMap[slug] = (currentFactIndex + 1) % Math.max(facts.length, 1);
+
+    renderSegments(facts.length, currentFactIndex, false);
+    showFact(facts, currentFactIndex);
+
+    // image
+    if (data.imageUrl) {
+      const fx = data.imageFocus?.x;
+      const fy = data.imageFocus?.y;
+      setHeroImage(data.imageUrl, fx, fy);
+      setAttribution(data.imageAttribution);
+    } else {
+      generatedFallback.style.display = 'block';
+      undimHero();
     }
 
-    function slugify(value) {
-      return value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    // audio
+    await playWelcome(slug, town);
+
+  } catch {
+    generatedFallback.style.display = 'block';
+    undimHero();
+    renderSegments(1, 0, false);
+    factCard.style.display = 'none';
+  }
+}
+
+// ── GEOCODING ──
+async function geocode(lat, lon) {
+  const res = await fetch('/nominatim?lat=' + lat + '&lon=' + lon);
+  if (!res.ok) throw new Error('Nominatim error ' + res.status);
+  return res.json();
+}
+
+async function onPosition(pos) {
+  const { latitude: lat, longitude: lon } = pos.coords;
+
+  if (lastGeocodedLat !== null) {
+    if (haversineMetres(lat, lon, lastGeocodedLat, lastGeocodedLon) < 50) return;
+  }
+  if (geocodeInFlight) return;
+
+  lastGeocodedLat = lat; lastGeocodedLon = lon;
+  geocodeInFlight = true;
+
+  try {
+    const result = await geocode(lat, lon);
+    const addr = result.address || {};
+    const rawTown = addr.city || addr.town || addr.village || addr.hamlet || addr.suburb || '';
+    if (!rawTown) { geocodeInFlight = false; return; }
+
+    let stateCode = (addr.state_code || '').toUpperCase();
+    if (!stateCode && addr['ISO3166-2-lvl4']) {
+      const parts = addr['ISO3166-2-lvl4'].split('-');
+      stateCode = (parts[parts.length-1] || '').toUpperCase();
+    }
+    if (!stateCode && addr.state) {
+      const ss = slugify(addr.state);
+      stateCode = Object.keys(STATE_SLUGS).find(k => STATE_SLUGS[k] === ss) || '';
     }
 
-    function factLibrarySlug(townName, stateCode) {
-      let normalized = townName;
-      for (const [from, to] of TOWN_SUBSTITUTIONS) {
-        normalized = normalized.split(from).join(to);
-      }
-      // Metro slug exceptions
-      if (normalized === 'New York') return 'new-york-city';
-      if (normalized === 'Washington' && stateCode === 'DC') return 'washington-dc';
-      const stateSlug = STATE_SLUGS[stateCode.toUpperCase()] ?? stateCode.toLowerCase();
-      return slugify(normalized + '-' + stateSlug);
-    }
+    const county = addr.county ? addr.county.replace(/\s*County$/i,'').trim() + ', ' + stateCode : stateCode;
+    const town = normalizeRawTown(rawTown);
+    const townKey = town + '|' + stateCode;
+    if (townKey === currentTownKey) { geocodeInFlight = false; return; }
 
-    function haversineMetres(lat1, lon1, lat2, lon2) {
-      const R = 6371000;
-      const dLat = (lat2 - lat1) * Math.PI / 180;
-      const dLon = (lon2 - lon1) * Math.PI / 180;
-      const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
-      return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    }
+    currentTownKey = townKey;
+    await onTownChanged(town, stateCode, county);
+  } catch(e) {
+    console.error('geocode error', e);
+  }
+  geocodeInFlight = false;
+}
 
-    let lastGeocodedLat = null;
-    let lastGeocodedLon = null;
-    let currentTown = null;
-    let watchId = null;
-    let audioUnlocked = false;
+function onGeoError(err) {
+  const msg = err.code === 1 ? 'Location access denied — please allow location and reload.'
+    : err.code === 2 ? 'Location unavailable.'
+    : 'Location timed out.';
+  document.getElementById('startStatus').textContent = msg;
+}
 
-    function setStatus(msg) { document.getElementById('status').textContent = msg; }
-    function setTown(name) { document.getElementById('town').textContent = name || '—'; }
-    function setFact(text) { document.getElementById('fact').textContent = text || ''; }
-    function setSource(text) { document.getElementById('source').textContent = text || ''; }
+// ── START ──
+function startDemo() {
+  // unlock audio on this gesture
+  const silentAudio = new Audio();
+  silentAudio.play().catch(()=>{});
+  if ('speechSynthesis' in window) {
+    const u = new SpeechSynthesisUtterance('');
+    window.speechSynthesis.speak(u);
+    window.speechSynthesis.cancel();
+  }
 
-    async function playFact(slug, factText) {
-      const clipUrl = R2_BASE + '/' + slug + '.mp3';
-      try {
-        setStatus('Loading audio clip...');
-        const audio = new Audio(clipUrl);
-        await new Promise((resolve, reject) => {
-          audio.oncanplaythrough = () => {
-            audio.play().then(resolve).catch(reject);
-          };
-          audio.onerror = reject;
-          audio.load();
-          setTimeout(reject, 8000); // 8s timeout
-        });
-        setStatus('Playing Kokoro clip');
-        setSource('Audio: Kokoro TTS');
-        audio.onended = () => setStatus('Ready');
-      } catch {
-        // Fallback to Web Speech
-        setStatus('Using TTS fallback');
-        setSource('Audio: Web Speech');
-        if ('speechSynthesis' in window) {
-          window.speechSynthesis.cancel();
-          const utt = new SpeechSynthesisUtterance(factText);
-          utt.rate = 0.95;
-          utt.onend = () => setStatus('Ready');
-          window.speechSynthesis.speak(utt);
-        } else {
-          setStatus('No audio available');
-        }
-      }
-    }
+  document.getElementById('startScreen').style.display = 'none';
 
-    async function onTownChanged(townName, stateCode, rawState) {
-      const slug = factLibrarySlug(townName, stateCode);
-      setFact('');
-      setSource('');
-      setStatus('Fetching facts...');
-      try {
-        const res = await fetch('/facts?slug=' + slug);
-        if (!res.ok) throw new Error('not found');
-        const data = await res.json();
-        const facts = data.facts || [];
-        if (!facts.length) throw new Error('empty');
-        const fact = facts[Math.floor(Math.random() * facts.length)];
-        const text = fact.text || fact;
-        setFact(text);
-        await playFact(slug, text);
-      } catch {
-        setFact('');
-        setSource('');
-        setStatus('No facts available for this town');
-      }
-    }
+  if (!('geolocation' in navigator)) {
+    townNameEl.textContent = 'Geolocation not available';
+    return;
+  }
 
-    async function geocode(lat, lon) {
-      const res = await fetch('/nominatim?lat=' + lat + '&lon=' + lon);
-      if (!res.ok) throw new Error('Nominatim error');
-      return res.json();
-    }
+  showChip('LOCATING...', 'warning');
+  townNameEl.textContent = 'Finding your town…';
 
-    async function onPosition(pos) {
-      const { latitude: lat, longitude: lon } = pos.coords;
-
-      if (lastGeocodedLat !== null) {
-        const dist = haversineMetres(lat, lon, lastGeocodedLat, lastGeocodedLon);
-        if (dist < 50) return;
-      }
-
-      lastGeocodedLat = lat;
-      lastGeocodedLon = lon;
-
-      setStatus('Locating...');
-      try {
-        const result = await geocode(lat, lon);
-        const addr = result.address || {};
-        const rawTown = addr.city || addr.town || addr.village || addr.hamlet || addr.suburb || '';
-
-        // state_code may be lowercase, absent, or provided as ISO3166-2-lvl4 ("US-GA")
-        let stateCode = (addr.state_code || '').toUpperCase();
-        if (!stateCode && addr['ISO3166-2-lvl4']) {
-          // "US-GA" → "GA"
-          const parts = addr['ISO3166-2-lvl4'].split('-');
-          stateCode = (parts[parts.length - 1] || '').toUpperCase();
-        }
-        if (!stateCode && addr.state) {
-          const stateSlug = slugify(addr.state);
-          stateCode = Object.keys(STATE_SLUGS).find(k => STATE_SLUGS[k] === stateSlug) || '';
-        }
-
-        if (!rawTown) { setStatus('Town not found for this location'); return; }
-
-        const town = normalizeRawTown(rawTown);
-        const townKey = town + '|' + stateCode;
-        if (townKey === currentTown) { setStatus('Ready'); return; }
-
-        currentTown = townKey;
-        setTown(town);
-        await onTownChanged(town, stateCode);
-      } catch (e) {
-        setStatus('Geocode error: ' + e.message);
-      }
-    }
-
-    function onError(err) {
-      if (err.code === 1) {
-        setStatus('Location access denied. Please allow location and reload.');
-      } else {
-        setStatus('Location error: ' + err.message);
-      }
-    }
-
-    function startDemo() {
-      const btn = document.getElementById('startBtn');
-      btn.disabled = true;
-      btn.textContent = 'Running...';
-      audioUnlocked = true;
-
-      if (!('geolocation' in navigator)) {
-        setStatus('Geolocation not available in this browser.');
-        return;
-      }
-
-      setStatus('Requesting location...');
-      watchId = navigator.geolocation.watchPosition(onPosition, onError, {
-        enableHighAccuracy: true,
-        maximumAge: 5000,
-        timeout: 15000
-      });
-    }
-  </script>
+  navigator.geolocation.watchPosition(onPosition, onGeoError, {
+    enableHighAccuracy: true, maximumAge: 5000, timeout: 15000
+  });
+}
+</script>
 </body>
 </html>
