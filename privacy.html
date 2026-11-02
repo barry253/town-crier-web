@@ -20,7 +20,7 @@
 
     <main>
       <h1>Privacy Policy</h1>
-      <div class="effective-date">Effective date: August 18, 2026</div>
+      <div class="effective-date">Effective date: November 2, 2026</div>
 
       <p>This Privacy Policy describes how Town Crier ("Town Crier," "we," "us," or "our") collects, uses, and shares information when you use the Town Crier mobile application (the "App").</p>
 
@@ -32,9 +32,9 @@
       <div class="summary-box">
         <ul>
           <li><strong>No accounts.</strong> You do not need to sign up, log in, or provide personal information to use Town Crier.</li>
-          <li><strong>Location stays on your device.</strong> GPS coordinates are used locally to determine which town you are in. Approximate location data is only sent to us if you opt into anonymous analytics or if you submit a Problem Report.</li>
+          <li><strong>Location stays on your device.</strong> GPS coordinates are used on your device to determine which town you are in. We do not receive your precise location in normal operation. Crash and diagnostic reports may include an approximate location (rounded to about 1 km), and a Problem Report you submit may include the location where the issue occurred.</li>
           <li><strong>Anonymous usage data is optional.</strong> You can choose whether to share anonymous diagnostic data with us. You can change this choice anytime in the App's Settings.</li>
-          <li><strong>Crash reports are always on.</strong> If the App crashes or hits a technical error, we receive a report so we can fix it. Crash reports do not include your location.</li>
+          <li><strong>Crash reports are always on.</strong> If the App crashes or hits a technical error, we receive a report so we can fix it. They may include an approximate location (rounded to about 1 km), never your precise GPS position.</li>
           <li><strong>You control what you send us.</strong> Problem reports are only sent when you submit them yourself.</li>
           <li><strong>No advertising.</strong> We do not show ads, sell your data, or share it with advertisers.</li>
           <li><strong>No microphone or camera access.</strong> The App does not request or use your microphone or camera.</li>
@@ -69,15 +69,15 @@
         <li>The details of the problem you describe.</li>
         <li>Your Device ID (to correlate related reports).</li>
         <li>The town or location you were in when the issue occurred, if relevant.</li>
-        <li>Basic device information (phone model, Android version, App version) to help us reproduce the problem.</li>
+        <li>Basic device information (phone model, operating system version, App version) to help us reproduce the problem.</li>
         <li><strong>Optional:</strong> if you choose to provide it, your name and email address so we can follow up. This is entirely optional and is only used for follow-up on your report.</li>
       </ul>
 
       <h3>2.4 Automatic diagnostic and crash data (always active)</h3>
       <p>To keep the App working, some technical data is sent regardless of your other settings:</p>
       <ul>
-        <li><strong>Crash reports.</strong> If the App crashes or encounters an unexpected error, we receive an error report through Sentry (see Section 4). Crash reports include the type of error and where in the App's code it happened, basic device information, your Device ID, and contextual information about your recent actions in the App (such as which screens you visited or which buttons you tapped) to help us reproduce the problem. Crash reports do not include your location.</li>
-        <li><strong>Operational health signals.</strong> A small number of technical events help us detect App-level issues (for example, whether an audio playback got stuck, or whether an image failed to load). These signals do not include your location or personally identifiable information.</li>
+        <li><strong>Crash reports.</strong> If the App crashes or encounters an unexpected error, we receive an error report through Sentry (see Section 4). Crash reports include the type of error and where in the App's code it happened, basic device information, your Device ID, and contextual information about your recent actions in the App (such as which screens you visited or which buttons you tapped) to help us reproduce the problem. Crash reports may include an approximate location (coordinates rounded to about 1 km) to help us diagnose location-related issues; they never include your precise GPS position.</li>
+        <li><strong>Operational health signals.</strong> A small number of technical events help us detect App-level issues (for example, whether an audio playback got stuck, or whether an image failed to load). These signals do not include personally identifiable information. Where they include location, it is approximate (rounded to about 1 km).</li>
         <li><strong>Content gap reports.</strong> When you drive through a town that we do not yet have content for, the App automatically reports the town's name, county, and state. This helps us prioritize which towns to add next. No GPS coordinates are included in these reports.</li>
         <li><strong>App mode events.</strong> When you change the App's operating mode (for example, switching between screen-on and screen-off driving modes), we record the transition. This helps us detect configuration issues.</li>
       </ul>
@@ -128,13 +128,14 @@
       <p>Location data is central to how the App works, so we want to be especially clear:</p>
       <ul>
         <li><strong>Your device's GPS coordinates are processed locally on your device.</strong> The App uses them to determine which town you are in, so it can announce the town name and fetch relevant content.</li>
-        <li><strong>Coordinates are not continuously transmitted to our servers.</strong> In normal operation, we never receive your GPS coordinates.</li>
+        <li><strong>Coordinates are not continuously transmitted to our servers.</strong> In normal operation, we never receive your precise GPS coordinates.</li>
         <li><strong>Coordinates may be included in specific reports:</strong>
           <ul>
             <li>If you submit a Problem Report, coordinates for the location where the problem occurred may be included to help us reproduce the issue.</li>
+            <li>Crash reports and operational health signals sent to Sentry may include an approximate location, with coordinates rounded to two decimal places (roughly 1 km), to help us diagnose location-related issues.</li>
           </ul>
         </li>
-        <li><strong>Crash reports and operational health data do not include your location.</strong> Sentry receives only technical error information, not GPS coordinates.</li>
+        <li><strong>Crash reports and operational health data never include your precise location.</strong> Where location is included, it is rounded to roughly 1 km.</li>
         <li><strong>We do not build location history profiles.</strong> We do not track where you drive, when you drive, or how long you spend in any place.</li>
       </ul>
       <p>You can revoke location permission at any time through your device's Settings. Doing so will prevent the App from working, because it cannot announce towns without knowing where you are.</p>
@@ -191,7 +192,7 @@
 
       <hr>
 
-      <p><em>This policy was last updated on August 18, 2026.</em></p>
+      <p><em>This policy was last updated on November 2, 2026.</em></p>
     </main>
 
     <footer>
