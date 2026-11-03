@@ -21,7 +21,7 @@
 
     <main>
       <h1>Privacy Policy</h1>
-      <div class="effective-date">Effective date: November 2, 2026</div>
+      <div class="effective-date">Effective date: November 3, 2026</div>
 
       <p>This Privacy Policy describes how Town Crier ("Town Crier," "we," "us," or "our") collects, uses, and shares information when you use the Town Crier mobile application (the "App").</p>
 
@@ -56,7 +56,7 @@
       <h3>2.2 Anonymous device identifier</h3>
       <p>When you first open the App, we generate a random anonymous identifier called a <strong>Device ID</strong> (formatted like <code>TC-XXXX-XXXX</code>). This identifier:</p>
       <ul>
-        <li>Is not linked to your name, email, phone number, or any other personal information.</li>
+        <li>Is a random identifier that isn't derived from your name, phone number, or device hardware IDs.</li>
         <li>Is generated on your device and stored locally.</li>
         <li>Is included with any Problem Reports you submit and, if you have opted into anonymous analytics, with anonymous usage data.</li>
         <li>Persists across App updates.</li>
@@ -70,8 +70,9 @@
         <li>The details of the problem you describe.</li>
         <li>Your Device ID (to correlate related reports).</li>
         <li>The town or location you were in when the issue occurred, if relevant.</li>
-        <li>Basic device information (phone model, operating system version, App version) to help us reproduce the problem.</li>
+        <li>Your App version and platform (iPhone or Android) to help us reproduce the problem.</li>
         <li><strong>Optional:</strong> if you choose to provide it, your name and email address so we can follow up. This is entirely optional and is only used for follow-up on your report.</li>
+        <li><strong>Optional:</strong> if you choose to attach a diagnostic log, it may include precise GPS coordinates recorded during your drive.</li>
       </ul>
 
       <h3>2.4 Automatic diagnostic and crash data (always active)</h3>
@@ -79,7 +80,7 @@
       <ul>
         <li><strong>Crash reports.</strong> If the App crashes or encounters an unexpected error, we receive an error report through Sentry (see Section 4). Crash reports include the type of error and where in the App's code it happened, basic device information, your Device ID, and contextual information about your recent actions in the App (such as which screens you visited or which buttons you tapped) to help us reproduce the problem. Crash reports may include an approximate location (coordinates rounded to about 1 km) to help us diagnose location-related issues; they never include your precise GPS position.</li>
         <li><strong>Operational health signals.</strong> A small number of technical events help us detect App-level issues (for example, whether an audio playback got stuck, or whether an image failed to load). These signals do not include personally identifiable information. Where they include location, it is approximate (rounded to about 1 km).</li>
-        <li><strong>Content gap reports.</strong> When you drive through a town that we do not yet have content for, the App automatically reports the town's name, county, and state. This helps us prioritize which towns to add next. No GPS coordinates are included in these reports.</li>
+        <li><strong>Content gap reports.</strong> When you drive through a town that we do not yet have content for, the App automatically reports your Device ID, the town's name, county, and state, and the GPS coordinates of where the gap was detected. This is sent regardless of your analytics opt-in setting. This helps us prioritize which towns to add next.</li>
         <li><strong>App mode events.</strong> When you change the App's operating mode (for example, switching between screen-on and screen-off driving modes), we record the transition. This helps us detect configuration issues.</li>
       </ul>
 
@@ -123,6 +124,8 @@
 
       <p><strong>OpenStreetMap (Nominatim).</strong> The App uses OpenStreetMap's Nominatim service to translate GPS coordinates into town names. These requests are made from your device directly. OpenStreetMap's privacy policy is available at <a href="https://wiki.osmfoundation.org/wiki/Privacy_Policy">wiki.osmfoundation.org/wiki/Privacy_Policy</a>.</p>
 
+      <p><strong>Expo (EAS Update).</strong> The App checks Expo's EAS Update service for over-the-air app updates and downloads them directly to your device. Expo receives standard request data such as your IP address and platform. Expo's privacy policy is available at <a href="https://expo.dev/privacy">expo.dev/privacy</a>.</p>
+
       <p>We do not control these third-party services and are not responsible for their privacy practices. We encourage you to review their policies.</p>
 
       <h2>5. Location Data</h2>
@@ -130,14 +133,15 @@
       <ul>
         <li><strong>Your device's GPS coordinates are processed locally on your device.</strong> The App uses them to determine which town you are in, so it can announce the town name and fetch relevant content.</li>
         <li><strong>Coordinates are not continuously transmitted to our servers.</strong> In normal operation, we never receive your precise GPS coordinates.</li>
-        <li><strong>Coordinates may be included in specific reports:</strong>
+        <li><strong>Precise coordinates may be included in Problem Reports (attached diagnostic logs) and content gap reports:</strong>
           <ul>
-            <li>If you submit a Problem Report, coordinates for the location where the problem occurred may be included to help us reproduce the issue.</li>
+            <li>If you submit a Problem Report with an attached diagnostic log, that log may include precise GPS coordinates recorded during your drive, to help us reproduce the issue.</li>
+            <li>Content gap reports, sent automatically when you drive through a town we don't yet have content for, include the GPS coordinates of where the gap was detected.</li>
             <li>Crash reports and operational health signals sent to Sentry may include an approximate location, with coordinates rounded to two decimal places (roughly 1 km), to help us diagnose location-related issues.</li>
           </ul>
         </li>
         <li><strong>Crash reports and operational health data never include your precise location.</strong> Where location is included, it is rounded to roughly 1 km.</li>
-        <li><strong>We do not build location history profiles.</strong> We do not track where you drive, when you drive, or how long you spend in any place.</li>
+        <li><strong>We don't build location histories or travel profiles.</strong> Each report reflects a single point in time, not a continuous track of where you drive.</li>
       </ul>
       <p>You can revoke location permission at any time through your device's Settings. Doing so will prevent the App from working, because it cannot announce towns without knowing where you are.</p>
 
@@ -193,7 +197,7 @@
 
       <hr>
 
-      <p><em>This policy was last updated on November 2, 2026.</em></p>
+      <p><em>This policy was last updated on November 3, 2026.</em></p>
     </main>
 
     <footer>
