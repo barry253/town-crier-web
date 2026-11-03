@@ -4,36 +4,129 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Town Crier — Audio-first driving companion</title>
-  <meta name="description" content="Town Crier announces the towns you drive through and shares curated facts, hands-free.">
+  <meta name="description" content="Town Crier announces each town as you drive into it, then shares a fact about the place — hands-free, with your eyes on the road.">
+  <link rel="canonical" href="https://towncrierapp.com/">
+  <link rel="icon" href="/assets/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <meta name="theme-color" content="#0a0a0a">
+
+  <meta property="og:title" content="Town Crier — Audio-first driving companion">
+  <meta property="og:description" content="Town Crier announces each town as you drive into it, then shares a fact about the place — hands-free, with your eyes on the road.">
+  <meta property="og:url" content="https://towncrierapp.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://towncrierapp.com/assets/icon-512.png">
+  <meta name="twitter:card" content="summary">
+
+  <!-- <meta name="apple-itunes-app" content="app-id=6803290087"> enable after App Store release -->
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Town Crier",
+    "operatingSystem": "Android, iOS",
+    "applicationCategory": "TravelApplication",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "url": "https://towncrierapp.com/",
+    "description": "Town Crier announces each town as you drive into it, then shares a fact about the place — hands-free, with your eyes on the road."
+  }
+  </script>
+
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
     <header>
-      <a href="index.html" class="brand">Town <span>Crier</span></a>
+      <a href="/" class="brand">Town <span>Crier</span></a>
       <div class="tagline">Audio-first driving companion</div>
       <nav>
-        <a href="index.html" class="active">Home</a>
-        <a href="privacy.html">Privacy</a>
-        <a href="support.html">Support</a>
+        <a href="/" class="active">Home</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/support">Support</a>
       </nav>
     </header>
 
     <main>
-      <div class="landing-hero">
-        <h1>Discover the towns you drive through.</h1>
-        <p class="subtitle">
-          Town Crier is a hands-free driving companion that announces the names of places you pass and shares curated facts along the way. Eyes on the road, ears on the story.
+      <div class="hero">
+        <h1>Every town has a story.</h1>
+        <p class="hero-subtitle">
+          Town Crier announces each town as you drive into it, then tells you something worth knowing about it — hands-free, with your eyes on the road.
         </p>
       </div>
 
-      <div class="landing-links">
-        <a href="privacy.html">Privacy Policy</a>
+      <div class="download-row">
+        <a href="https://play.google.com/store/apps/details?id=com.towncrierapp.app">
+          <img class="playstore-badge" src="/assets/google-play-badge.png" alt="Get it on Google Play" height="56">
+        </a>
+        <!-- After App Store approval: replace pill with Apple's official badge linking to https://apps.apple.com/app/id6803290087 -->
+        <span class="appstore-pill">Coming soon to the App Store</span>
       </div>
+
+      <div class="screenshot-row">
+        <img src="/assets/screen-town.jpg" alt="Town Crier announcing Telluride, Colorado with a photo of the town" width="450" height="977" loading="lazy">
+        <img src="/assets/screen-bridge.jpg" alt="Town Crier announcing the Mario M. Cuomo Bridge between Tarrytown and Nyack" width="450" height="977" loading="lazy">
+        <img src="/assets/screen-facts.jpg" alt="Town Crier's list of curated facts about Valley Cottage, New York" width="450" height="977" loading="lazy">
+      </div>
+
+      <div class="section-block">
+        <h2>How it works</h2>
+        <div class="step-list">
+          <div class="step">
+            <div class="step-num">1</div>
+            <p><strong>Open it and drive.</strong> No route or destination to set.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <p><strong>Hear the town as you cross the line.</strong> Its name, then a fact about the place.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <p><strong>Keep your phone locked.</strong> It runs in the background and plays through your car's speakers over Bluetooth.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <h2>What you'll hear</h2>
+        <div class="card-row">
+          <div class="card">
+            <h3>Towns</h3>
+            <p>Tens of thousands of U.S. towns, each with curated facts.</p>
+          </div>
+          <div class="card">
+            <h3>Bridges</h3>
+            <p>Major bridges announced as you drive onto them.</p>
+          </div>
+          <div class="card">
+            <h3>Your trip, later</h3>
+            <p>The History tab keeps the towns you passed so you can read more when you've parked.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <h2>Private by design</h2>
+        <p class="section-text">
+          No account. No ads. Your location is used on your phone to work out which town you're in, and we don't build a history of where you drive. See our <a href="/privacy">Privacy Policy</a>.
+        </p>
+      </div>
+
+      <div class="section-block">
+        <h2>Made for the road</h2>
+        <p class="section-text">
+          Everything is spoken, so you never need to look at the screen. Town Crier isn't a navigation app — use it alongside your maps app.
+        </p>
+      </div>
+
+      <p class="support-line">Questions? See <a href="/support">Support</a>.</p>
     </main>
 
     <footer>
-      <p>&copy; 2026 Town Crier</p>
+      <p>&copy; 2026 Town Crier · <a href="/support">Support</a> · <a href="/privacy">Privacy</a> · <a href="/delete-data">Delete your data</a> · <a href="mailto:privacy@towncrierapp.com">privacy@towncrierapp.com</a></p>
     </footer>
   </div>
 </body>
