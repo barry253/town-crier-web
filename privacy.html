@@ -33,7 +33,7 @@
       <div class="summary-box">
         <ul>
           <li><strong>No accounts.</strong> You do not need to sign up, log in, or provide personal information to use Town Crier.</li>
-          <li><strong>Location stays on your device.</strong> GPS coordinates are used on your device to determine which town you are in. We do not receive your precise location in normal operation. Crash and diagnostic reports may include an approximate location (rounded to about 1 km), and a Problem Report you submit may include the location where the issue occurred.</li>
+          <li><strong>Location stays on your device.</strong> GPS coordinates are used on your device to determine which town you are in. We receive precise coordinates only in the specific reports described below. Crash and diagnostic reports may include an approximate location (rounded to about 1 km).</li>
           <li><strong>Anonymous usage data is optional.</strong> You can choose whether to share anonymous diagnostic data with us. You can change this choice anytime in the App's Settings.</li>
           <li><strong>Crash reports are always on.</strong> If the App crashes or hits a technical error, we receive a report so we can fix it. They may include an approximate location (rounded to about 1 km), never your precise GPS position.</li>
           <li><strong>You control what you send us.</strong> Problem reports are only sent when you submit them yourself.</li>
@@ -58,7 +58,7 @@
       <ul>
         <li>Is a random identifier that isn't derived from your name, phone number, or device hardware IDs.</li>
         <li>Is generated on your device and stored locally.</li>
-        <li>Is included with any Problem Reports you submit and, if you have opted into anonymous analytics, with anonymous usage data.</li>
+        <li>Is included with any Problem Reports you submit, with automatic content gap reports, and, if you have opted into anonymous analytics, with anonymous usage data.</li>
         <li>Persists across App updates.</li>
         <li>Is deleted if you uninstall the App and reinstall.</li>
       </ul>
@@ -114,7 +114,7 @@
       <h2>4. Third Parties We Use</h2>
       <p>The App uses the following third-party services to function:</p>
 
-      <p><strong>Cloudflare.</strong> We use Cloudflare Workers and Cloudflare R2 to store Problem Reports, anonymous content gap reports, and to serve the App's content (fact library, images, and audio clips). Cloudflare's privacy policy is available at <a href="https://www.cloudflare.com/privacypolicy/">cloudflare.com/privacypolicy</a>.</p>
+      <p><strong>Cloudflare.</strong> We use Cloudflare Workers and Cloudflare R2 to store Problem Reports, automatic content gap reports, and to serve the App's content (fact library, images, and audio clips). Cloudflare's privacy policy is available at <a href="https://www.cloudflare.com/privacypolicy/">cloudflare.com/privacypolicy</a>.</p>
 
       <p><strong>Sentry.</strong> We use Sentry to collect crash reports and operational health signals. Sentry is active regardless of your analytics opt-in setting. Sentry's privacy policy is available at <a href="https://sentry.io/privacy/">sentry.io/privacy</a>. Default retention for Sentry data is 90 days.</p>
 
@@ -132,7 +132,7 @@
       <p>Location data is central to how the App works, so we want to be especially clear:</p>
       <ul>
         <li><strong>Your device's GPS coordinates are processed locally on your device.</strong> The App uses them to determine which town you are in, so it can announce the town name and fetch relevant content.</li>
-        <li><strong>Coordinates are not continuously transmitted to our servers.</strong> In normal operation, we never receive your precise GPS coordinates.</li>
+        <li><strong>Coordinates are not continuously transmitted to our servers.</strong> We receive precise coordinates only in the specific reports described below.</li>
         <li><strong>Precise coordinates may be included in Problem Reports (attached diagnostic logs) and content gap reports:</strong>
           <ul>
             <li>If you submit a Problem Report with an attached diagnostic log, that log may include precise GPS coordinates recorded during your drive, to help us reproduce the issue.</li>
@@ -147,7 +147,7 @@
 
       <h2>6. Data Retention</h2>
       <ul>
-        <li><strong>Problem Reports and anonymous content gap reports</strong> are stored on Cloudflare R2 indefinitely, as they form our record of user-reported issues and content needs. You can request deletion (see Section 8).</li>
+        <li><strong>Problem Reports and automatic content gap reports</strong> are stored on Cloudflare R2 indefinitely, as they form our record of user-reported issues and content needs. You can request deletion (see Section 8).</li>
         <li><strong>Crash reports and operational data (Sentry)</strong> are retained for 90 days by default.</li>
         <li><strong>Anonymous analytics (PostHog)</strong> are retained according to PostHog's default policies.</li>
         <li><strong>Data on your device</strong> is retained until you clear the App's data or uninstall.</li>
