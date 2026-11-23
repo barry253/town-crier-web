@@ -4,27 +4,34 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Town Crier — Audio-first driving companion</title>
-  <meta name="description" content="Town Crier announces each town as you drive into it, then shares a fact about the place — hands-free, with your eyes on the road.">
+  <meta name="description" content="Town Crier announces each town as you drive into it, then shares a fact about the place — hands-free, with your eyes on the road. Free on iPhone and Android.">
   <link rel="canonical" href="https://towncrierapp.com/">
   <link rel="icon" href="/assets/favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="preload" href="/assets/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/ibm-plex-sans-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
   <meta name="theme-color" content="#0a0a0a">
 
-  <meta property="og:title" content="Town Crier — Audio-first driving companion">
-  <meta property="og:description" content="Town Crier announces each town as you drive into it, then shares a fact about the place — hands-free, with your eyes on the road.">
+  <meta name="apple-itunes-app" content="app-id=6803290087">
+
+  <meta property="og:title" content="Town Crier — Every town has a story">
+  <meta property="og:description" content="Hear each town as you drive into it, then something worth knowing about it. Free on iPhone and Android.">
   <meta property="og:url" content="https://towncrierapp.com/">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://towncrierapp.com/assets/icon-512.png">
-  <meta name="twitter:card" content="summary">
-
-  <!-- <meta name="apple-itunes-app" content="app-id=6803290087"> enable after App Store release -->
+  <meta property="og:site_name" content="Town Crier">
+  <meta property="og:image" content="https://towncrierapp.com/assets/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Town Crier app screens announcing Telluride, Colorado and the Mario M. Cuomo Bridge">
+  <meta name="twitter:card" content="summary_large_image">
 
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
+    "@type": "MobileApplication",
     "name": "Town Crier",
-    "operatingSystem": "Android, iOS",
+    "alternateName": "Town Crier: Driving Companion",
+    "operatingSystem": "iOS 15.1 or later, Android 7.0 or later",
     "applicationCategory": "TravelApplication",
     "offers": {
       "@type": "Offer",
@@ -32,102 +39,146 @@
       "priceCurrency": "USD"
     },
     "url": "https://towncrierapp.com/",
+    "image": "https://towncrierapp.com/assets/icon-512.png",
+    "screenshot": [
+      "https://towncrierapp.com/assets/screen-town.jpg",
+      "https://towncrierapp.com/assets/screen-bridge.jpg",
+      "https://towncrierapp.com/assets/screen-facts.jpg"
+    ],
+    "installUrl": [
+      "https://apps.apple.com/app/id6803290087",
+      "https://play.google.com/store/apps/details?id=com.towncrierapp.app"
+    ],
+    "sameAs": [
+      "https://apps.apple.com/app/id6803290087",
+      "https://play.google.com/store/apps/details?id=com.towncrierapp.app"
+    ],
     "description": "Town Crier announces each town as you drive into it, then shares a fact about the place — hands-free, with your eyes on the road."
   }
   </script>
 
-  <link rel="stylesheet" href="style.css">
+  <!-- Put the visitor's own store first. Progressive enhancement: without JS both badges show, App Store first. -->
+  <script>
+    (function () {
+      var ua = navigator.userAgent || '';
+      var ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      if (/Android/i.test(ua)) document.documentElement.classList.add('is-android');
+      else if (ios) document.documentElement.classList.add('is-ios');
+    })();
+  </script>
+
+  <link rel="stylesheet" href="/style.css">
 </head>
-<body>
-  <div class="container">
-    <header>
-      <a href="/" class="brand">Town <span>Crier</span></a>
-      <div class="tagline">Audio-first driving companion</div>
+<body class="home">
+  <header class="site-header">
+    <div class="wrap">
+      <a href="/" class="brand"><img src="/assets/icon-512.png" alt="" width="36" height="36">Town <span>Crier</span></a>
       <nav>
         <a href="/" class="active">Home</a>
-        <a href="/privacy">Privacy</a>
         <a href="/support">Support</a>
+        <a href="/privacy">Privacy</a>
       </nav>
-    </header>
+    </div>
+  </header>
 
-    <main>
-      <div class="hero">
+  <main>
+    <section class="hero wrap">
+      <div class="hero-copy">
+        <p class="eyebrow">Audio-first driving companion</p>
         <h1>Every town has a story.</h1>
         <p class="hero-subtitle">
           Town Crier announces each town as you drive into it, then tells you something worth knowing about it — hands-free, with your eyes on the road.
         </p>
+        <div class="stores">
+          <a class="store store-apple" href="https://apps.apple.com/app/id6803290087">
+            <img src="/assets/app-store-badge-black.svg" alt="Download on the App Store" width="144" height="48">
+          </a>
+          <a class="store store-google" href="https://play.google.com/store/apps/details?id=com.towncrierapp.app">
+            <img src="/assets/google-play-badge.png" alt="Get it on Google Play" width="161" height="48">
+          </a>
+        </div>
       </div>
 
-      <div class="download-row">
-        <a href="https://play.google.com/store/apps/details?id=com.towncrierapp.app">
-          <img class="playstore-badge" src="/assets/google-play-badge.png" alt="Get it on Google Play" height="56">
-        </a>
-        <!-- After App Store approval: replace pill with Apple's official badge linking to https://apps.apple.com/app/id6803290087 -->
-        <span class="appstore-pill">Coming soon to the App Store</span>
+      <div class="shots" aria-label="App screenshots">
+        <img class="shot shot-bridge" src="/assets/screen-bridge.jpg" alt="Town Crier announcing the Mario M. Cuomo Bridge between Tarrytown and Nyack" width="450" height="977">
+        <img class="shot shot-town" src="/assets/screen-town.jpg" alt="Town Crier announcing Telluride, Colorado with a photo of the town" width="450" height="977">
+        <img class="shot shot-facts" src="/assets/screen-facts.jpg" alt="Town Crier's list of curated facts about Valley Cottage, New York" width="450" height="977">
       </div>
+    </section>
 
-      <div class="screenshot-row">
-        <img src="/assets/screen-town.jpg" alt="Town Crier announcing Telluride, Colorado with a photo of the town" width="450" height="977" loading="lazy">
-        <img src="/assets/screen-bridge.jpg" alt="Town Crier announcing the Mario M. Cuomo Bridge between Tarrytown and Nyack" width="450" height="977" loading="lazy">
-        <img src="/assets/screen-facts.jpg" alt="Town Crier's list of curated facts about Valley Cottage, New York" width="450" height="977" loading="lazy">
-      </div>
-
-      <div class="section-block">
+    <section class="band">
+      <div class="wrap">
         <h2>How it works</h2>
-        <div class="step-list">
-          <div class="step">
-            <div class="step-num">1</div>
-            <p><strong>Open it and drive.</strong> No route or destination to set.</p>
-          </div>
-          <div class="step">
-            <div class="step-num">2</div>
-            <p><strong>Hear the town as you cross the line.</strong> Its name, then a fact about the place.</p>
-          </div>
-          <div class="step">
-            <div class="step-num">3</div>
-            <p><strong>Keep your phone locked.</strong> It runs in the background and plays through your car's speakers over Bluetooth.</p>
-          </div>
+        <ol class="steps">
+          <li>
+            <span class="step-num">1</span>
+            <h3>Open it and drive.</h3>
+            <p>No route or destination to set.</p>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <h3>Hear the town as you cross the line.</h3>
+            <p>Its name, then a fact about the place.</p>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <h3>Keep your phone locked.</h3>
+            <p>It runs in the background and plays through your car's speakers over Bluetooth.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="wrap section">
+      <h2>What you'll hear</h2>
+      <div class="cards">
+        <div class="card">
+          <h3>Towns</h3>
+          <p>Tens of thousands of U.S. towns, each with curated facts.</p>
+        </div>
+        <div class="card">
+          <h3>Bridges</h3>
+          <p>Major bridges announced as you drive onto them.</p>
+        </div>
+        <div class="card">
+          <h3>Your trip, later</h3>
+          <p>The History tab keeps the towns you passed so you can read more when you've parked.</p>
         </div>
       </div>
+    </section>
 
-      <div class="section-block">
-        <h2>What you'll hear</h2>
-        <div class="card-row">
-          <div class="card">
-            <h3>Towns</h3>
-            <p>Tens of thousands of U.S. towns, each with curated facts.</p>
-          </div>
-          <div class="card">
-            <h3>Bridges</h3>
-            <p>Major bridges announced as you drive onto them.</p>
-          </div>
-          <div class="card">
-            <h3>Your trip, later</h3>
-            <p>The History tab keeps the towns you passed so you can read more when you've parked.</p>
-          </div>
+    <section class="wrap section">
+      <div class="pair">
+        <div class="panel">
+          <h2>Private by design</h2>
+          <p>No account. No ads. Your location is used on your phone to work out which town you're in, and we don't build a history of where you drive. See our <a href="/privacy">Privacy Policy</a>.</p>
+        </div>
+        <div class="panel">
+          <h2>Made for the road</h2>
+          <p>Everything is spoken, so you never need to look at the screen. Town Crier isn't a navigation app — use it alongside your maps app.</p>
         </div>
       </div>
+    </section>
 
-      <div class="section-block">
-        <h2>Private by design</h2>
-        <p class="section-text">
-          No account. No ads. Your location is used on your phone to work out which town you're in, and we don't build a history of where you drive. See our <a href="/privacy">Privacy Policy</a>.
-        </p>
+    <section class="wrap cta">
+      <img src="/assets/icon-512.png" alt="" width="72" height="72">
+      <h2>Take it on your next drive.</h2>
+      <div class="stores">
+        <a class="store store-apple" href="https://apps.apple.com/app/id6803290087">
+          <img src="/assets/app-store-badge-black.svg" alt="Download on the App Store" width="144" height="48">
+        </a>
+        <a class="store store-google" href="https://play.google.com/store/apps/details?id=com.towncrierapp.app">
+          <img src="/assets/google-play-badge.png" alt="Get it on Google Play" width="161" height="48">
+        </a>
       </div>
-
-      <div class="section-block">
-        <h2>Made for the road</h2>
-        <p class="section-text">
-          Everything is spoken, so you never need to look at the screen. Town Crier isn't a navigation app — use it alongside your maps app.
-        </p>
-      </div>
-
       <p class="support-line">Questions? See <a href="/support">Support</a>.</p>
-    </main>
+    </section>
+  </main>
 
-    <footer>
+  <footer class="site-footer">
+    <div class="wrap">
       <p>&copy; 2026 Town Crier · <a href="/support">Support</a> · <a href="/privacy">Privacy</a> · <a href="/delete-data">Delete your data</a> · <a href="mailto:privacy@towncrierapp.com">privacy@towncrierapp.com</a></p>
-    </footer>
-  </div>
+    </div>
+  </footer>
 </body>
 </html>

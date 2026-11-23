@@ -5,8 +5,11 @@ Public web content for Town Crier, the audio-first driving companion app for iPh
 ## What's here
 
 - **`index.html`** — landing page at `/`
+- **`support.html`** — support + FAQ at `/support`
 - **`privacy.html`** — privacy policy at `/privacy`
+- **`delete-data.html`** — data deletion at `/delete-data`
 - **`style.css`** — site-wide stylesheet
+- **`assets/`** — store badges, screenshots, icons, `og-image.jpg` (1200×630 share card), self-hosted IBM Plex Sans in `assets/fonts/`
 
 ## Deploy
 
@@ -19,16 +22,16 @@ Production URL: [https://towncrierapp.com](https://towncrierapp.com)
 To update the site:
 
 1. Edit the relevant HTML file locally
-2. Test the change by opening the HTML file directly in a browser
+2. Test with a local server (`python3 -m http.server`) — pages use root-relative `/assets/` paths, so opening files directly won't load images
 3. Commit and push to `main`
 4. Cloudflare Pages deploys automatically (~1 minute)
 
 ## Design principles
 
-- No JavaScript required — content is fully accessible without JS
+- No JavaScript required — the only script reorders store badges for Android visitors; everything works without it
 - Mobile-first responsive layout
 - Amber accents matching the Town Crier brand
-- Fast loading (single CSS file, no external dependencies)
+- Fast loading (single CSS file, self-hosted fonts, no external dependencies)
 
 ## Adding pages
 
